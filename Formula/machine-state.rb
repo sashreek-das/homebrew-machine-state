@@ -4,25 +4,16 @@ class MachineState < Formula
   version "0.1.0"
   license "MIT"
 
-  # Pre-built binaries — no Python required on the target machine.
-  # SHA256 values are printed by the GitHub Actions release job.
-  on_arm do
-    url "https://github.com/sashreek-das/machine-state/releases/download/v#{version}/machine-state-arm64.tar.gz"
-    sha256 "REPLACE_WITH_ARM64_SHA256"
-  end
-
-  on_intel do
-    url "https://github.com/sashreek-das/machine-state/releases/download/v#{version}/machine-state-x86_64.tar.gz"
-    sha256 "REPLACE_WITH_X86_64_SHA256"
-  end
+  # Apple Silicon only for now; Intel support coming in a future release.
+  # SHA256 is printed by the GitHub Actions release job — update after each release.
+  url "https://github.com/sashreek-das/machine-state/releases/download/v#{version}/machine-state-arm64.tar.gz"
+  sha256 "294747e049a867f88cce3124d16103f04305bd149f0705919cad5d535f968e3c"
 
   def install
-    arch = Hardware::CPU.arm? ? "arm64" : "x86_64"
-    bin.install "machine-state-#{arch}" => "machine-state"
+    bin.install "machine-state-arm64" => "machine-state"
   end
 
   def post_install
-    # Runtime data lives in ~/.machine-state — create on first install
     (Dir.home + "/.machine-state").tap { |d| FileUtils.mkdir_p(d) }
   end
 
